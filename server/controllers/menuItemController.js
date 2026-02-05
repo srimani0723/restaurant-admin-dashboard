@@ -12,7 +12,7 @@ export const getAllMenuItems = async (request, response) => {
     // }
 
     const filter = {};
-    if (category) filter.category = category;
+    if (category !== "All") filter.category = category;
     if (isAvailable !== undefined) filter.isAvailable = isAvailable === "true";
 
     if (minPrice || maxPrice) {
@@ -31,17 +31,18 @@ export const getAllMenuItems = async (request, response) => {
 
 export const getMenuItemsBySearch = async (request, response) => {
   try {
-    const { q } = request.query;
+    const { q = "" } = request.query;
 
-    if (!q)
-      return response.status(400).json({ message: "Search query is required" });
+    // if (!q)
+    // return response.status(400).json({ message: "Search query is required" });
 
     // $text instead of $regex for better performance because of using index in MongoDB
     // eg: GET /api/menu/search?q=pasta
     // searchItems = {$text:{$search:"pasta"}}
     // if no q then return all menu items .find({}) gives all documents
+    // if q is empty string then return all menu items
 
-    const searchItems = { $text: { $search: q } };
+    const searchItems = q !== "" ? { $text: { $search: q } } : {};
 
     const result = await MenuItem.find(searchItems);
 
@@ -87,13 +88,14 @@ export const createMenuItem = async (request, response) => {
       isAvailable,
     };
 
+    console.log(newMenuItem);
     const result = await MenuItem.insertOne(newMenuItem);
     response
       .status(201)
       .json({ message: "Menu item created successfully", result });
   } catch (error) {
     console.log(error);
-    response.status(500).json({ message: "Internal server error" });
+    response.status(500).json({ message: `Internal server error: ${error}` });
   }
 };
 
@@ -116,9 +118,10 @@ export const updateMenuItem = async (request, response) => {
       description,
       price,
       category,
-      imageUrl,
+      imageUrl: request.imageUrl ? request.imageUrl : imageUrl,
       isAvailable,
-      ingredients,
+      ingredients:
+        typeof ingredients === "string" ? ingredients.split(",") : ingredients,
       preparationTime,
     };
 
@@ -133,13 +136,15 @@ export const updateMenuItem = async (request, response) => {
       .json({ message: "Menu item updated successfully", result });
   } catch (error) {
     console.log(error);
-    response.status(500).json({ message: "Internal server error" });
+    response.status(500).json({ message: `Internal server error: ${error}` });
   }
 };
 
 export const deleteMenuItem = async (request, response) => {
   try {
     const { id } = request.params;
+
+    console.log(id);
 
     const result = await MenuItem.deleteOne({ _id: id });
     response
@@ -154,11 +159,11 @@ export const deleteMenuItem = async (request, response) => {
 export const toggleAvailability = async (request, response) => {
   try {
     const { id } = request.params;
-
-    const result = await MenuItem.updateOne(
-      { _id: id },
-      { $set: { isAvailable: !request.body.isAvailable } },
-    );
+    const menuItem = await MenuItem.findById(id);
+    if (!menuItem)
+      return response.status(404).json({ message: "Menu item not found" });
+    menuItem.isAvailable = !menuItem.isAvailable;
+    const result = await menuItem.save();
 
     response
       .status(200)

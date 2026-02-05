@@ -20,7 +20,7 @@ router.get("/:id", getMenuItemsById);
 
 router.post("/", upload.single("image"), cloudinaryUpload, createMenuItem);
 
-router.put("/:id", updateMenuItem);
+router.put("/:id", upload.single("image"), cloudinaryUpload, updateMenuItem);
 router.delete("/:id", deleteMenuItem);
 router.patch("/:id/availability", toggleAvailability); //toggle availability
 

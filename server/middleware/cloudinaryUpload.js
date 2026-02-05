@@ -19,7 +19,6 @@ export const cloudinaryUpload = async (req, res, next) => {
     req.imageUrl = result.url; // attach URL to request
     next();
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error at cloudinary" });
   }
 };

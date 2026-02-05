@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { toggleNavbarView, setActivePage } from "../Redux/menuSlice";
+import { toggleNavbarView, setActivePage } from "../Redux/MenuSlice";
 import { Unplug } from "lucide-react";
 
 const NotFound = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setActivePage("NotFound"));
+    dispatch(setActivePage(null));
   }, [dispatch]);
 
   const handleBackToDashboard = () => {

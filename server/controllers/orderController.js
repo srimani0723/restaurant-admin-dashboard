@@ -58,6 +58,7 @@ export const createOrder = async (request, response) => {
     };
 
     const result = await Order.insertOne(newOrder);
+
     response
       .status(201)
       .json({ message: "Order created successfully", result });
@@ -72,10 +73,7 @@ export const updateOrderStatus = async (request, response) => {
     const { id } = request.params;
     const { status } = request.body;
 
-    const result = await Order.updateOne(
-      { orderNumber: id },
-      { $set: { status } },
-    );
+    const result = await Order.findByIdAndUpdate(id, { $set: { status } });
 
     response
       .status(200)

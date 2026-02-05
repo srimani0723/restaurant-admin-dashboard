@@ -8,43 +8,52 @@ import {
   Search,
   ShoppingBasket,
   Soup,
+  PackageOpen,
+  HandPlatter,
+  BookSearch,
+  BaggageClaim,
+  LayoutPanelLeft,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleNavbarView, setActivePage } from "../Redux/menuSlice";
+import { toggleNavbarView, setActivePage } from "../Redux/MenuSlice";
 
 const list = [
   {
     name: "Dashboard",
     path: "/",
     icon: <LayoutDashboard size={25} />,
+    activeIcon: <LayoutPanelLeft size={25} />,
   },
   {
     name: "Menu",
     path: "/menu",
     icon: <CookingPot size={25} />,
+    activeIcon: <HandPlatter size={25} />,
   },
   {
     name: "Orders",
     path: "/orders",
     icon: <Package size={25} />,
+    activeIcon: <PackageOpen size={25} />,
   },
   {
     name: "Search",
     path: "/search",
     icon: <Search size={25} />,
+    activeIcon: <BookSearch size={25} />,
   },
   {
     name: "Cart",
     path: "/cart",
     icon: <ShoppingBasket size={25} />,
+    activeIcon: <BaggageClaim size={25} />,
   },
 ];
 
 const Navbar = () => {
   const { toggleView, activePage } = useSelector((state) => state.menu);
-
   const dispatch = useDispatch();
 
   const handleToggle = () => {
@@ -57,9 +66,9 @@ const Navbar = () => {
 
   return (
     <aside
-      className={` ${toggleView ? "lg:w-3/12 sm:w-4/12 w-[90%] lg:relative fixed" : "lg:w-20 sm:w-20 w-20"} h-screen lg:block  top-0 z-50  transition-all duration-100 ease-in`}
+      className={` ${toggleView ? "lg:w-2/12 sm:w-6/12 w-11/12" : "lg:w-15 w-15"} md:sticky fixed  sm:h-screen h-full lg:block top-0 z-50  transition-all duration-100 ease-in`}
     >
-      <nav className="h-full flex flex-col justify-between bg-white border-r border-gray-500 shadow-sm/30 p-4 rounded-br-4xl rounded-tr-4xl">
+      <nav className="h-full flex flex-col justify-between bg-white border-r border-gray-500 shadow-sm/30 p-2 ">
         <div className="flex flex-col gap-2">
           <div className="flex justify-center">
             {toggleView && (
@@ -78,16 +87,18 @@ const Navbar = () => {
           </div>
 
           <div className="mt-4">
-            <ul className="grid gap-3">
+            <ul className="grid gap-3 p-0 m-0">
               {list.map((item) => (
                 <NavLink to={item.path} key={item.name}>
                   <li
                     onClick={() => handleSetActivePage(item.name)}
-                    className={`p-3 ${activePage === item.name ? "bg-teal-200 text-teal-1000" : ""} hover:bg-teal-100  cursor-pointer rounded-full font-medium flex items-center gap-2`}
+                    className={`p-2 ${activePage === item.name ? "bg-teal-200 text-teal-1000" : "hover:bg-teal-100"}   cursor-pointer rounded-full font-medium flex items-center transition-all duration-500 ease-in-out`}
                   >
-                    {item.icon}
+                    {activePage === item.name
+                      ? (item.activeIcon ?? item.icon)
+                      : item.icon}
                     {toggleView && (
-                      <p className="lg:block transition-all duration-500 ease-in-out">
+                      <p className="ml-2 lg:block transition-all duration-500 ease-in-out">
                         {item.name}
                       </p>
                     )}

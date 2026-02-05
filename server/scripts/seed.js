@@ -4,7 +4,7 @@ import Order from "../models/Order.js";
 import connectDB from "../config/db.js";
 
 const IMAGE_URL =
-  "https://res-console.cloudinary.com/ddlwx2lmy/thumbnails/v1/image/upload/v1739549953/c2FtcGxlcy9kZXNzZXJ0LW9uLWEtcGxhdGU=/drilldown";
+  "http://res.cloudinary.com/ddlwx2lmy/image/upload/v1769934638/restaurant-admin-dashboard-menu-items/wqbqc8fx1ovqpot8msvt.jpg";
 
 const seedMenuItems = [
   {

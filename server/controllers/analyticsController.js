@@ -22,7 +22,7 @@ const getTopSellers = async (request, response) => {
       },
       { $unwind: "$itemDetails" },
 
-      { $sort: { totalQty: -1 } },
+      { $sort: { totalQty: -1, "itemDetails.price": -1 } },
       { $limit: 5 },
     ]);
 
