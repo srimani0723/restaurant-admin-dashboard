@@ -12,6 +12,7 @@ import useFetch from "../hooks/useFetch";
 import { useDispatch } from "react-redux";
 import { setExistingMenu, toggleMenuFormView } from "../Redux/menuFormSlice";
 import { addToCart } from "../Redux/cartSlice";
+import { toast } from "react-toastify";
 
 const MenuCard = ({ menu }) => {
   const [minimise, toggleMinimise] = useState(false);
@@ -54,6 +55,7 @@ const MenuCard = ({ menu }) => {
     deleteMutation.mutation.mutate(null, {
       onSuccess: () => {
         toggleMoreOptions(false);
+        toast.success(`${name} deleted successfully`);
       },
     });
   };
@@ -70,6 +72,7 @@ const MenuCard = ({ menu }) => {
   const handleCart = () => {
     dispatch(addToCart(menu));
     toggleMoreOptions(false);
+    toast.success(`${name} added to cart`);
   };
 
   return (

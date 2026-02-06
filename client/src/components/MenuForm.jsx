@@ -15,6 +15,7 @@ import {
 } from "../Redux/menuFormSlice";
 import useFetch from "../hooks/useFetch";
 import Loader from "../components/Loader";
+import { toast } from "react-toastify";
 
 const MenuForm = () => {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const MenuForm = () => {
     method,
     headers: { "Content-Type": "multipart/form-data" },
   });
-  const { mutate, isPending, error } = mutation;
+  const { mutate, isPending } = mutation;
 
   const handleForm = (e) => {
     e.preventDefault();
@@ -56,8 +57,12 @@ const MenuForm = () => {
 
     mutate(formData, {
       onSuccess: () => {
+        toast.success(`${name} added successfully`);
         dispatch(toggleMenuFormView());
         dispatch(clearExistingMenu());
+      },
+      onError: (error) => {
+        toast.error(error.message);
       },
     });
   };
@@ -227,7 +232,6 @@ const MenuForm = () => {
             <Loader />
           </p>
         )}
-        {error && <p className="text-red-500">Error: {error.message}</p>}
       </form>
     </div>
   );

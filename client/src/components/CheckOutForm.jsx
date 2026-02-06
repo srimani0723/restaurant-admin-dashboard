@@ -5,6 +5,7 @@ import Loader from "../components/Loader";
 import { CheckCircle, CircleX } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { clearCart, toggleCheckOutFormView } from "../Redux/cartSlice";
+import { toast } from "react-toastify";
 
 const CheckOutForm = ({ items }) => {
   const [customerName, setCustomerName] = useState("");
@@ -14,7 +15,7 @@ const CheckOutForm = ({ items }) => {
   const debouncedCustomerName = useDebounce(customerName, 500);
   const debouncedTableNumber = useDebounce(tableNumber, 500);
 
-  const { mutation, isPending, error, success } = useFetch({
+  const { mutation, isPending, success } = useFetch({
     url: "/api/orders",
     method: "POST",
   });
@@ -36,8 +37,12 @@ const CheckOutForm = ({ items }) => {
     if (debouncedCustomerName && debouncedTableNumber) {
       mutation.mutate(data, {
         onSuccess: () => {
+          toast.success("Order placed successfully");
           dispatch(toggleCheckOutFormView());
           dispatch(clearCart());
+        },
+        onError: (error) => {
+          toast.error(error.message);
         },
       });
     }
@@ -103,8 +108,6 @@ const CheckOutForm = ({ items }) => {
               "Checkout"
             )}
           </button>
-
-          {error && <p>{error.message}</p>}
         </form>
       </div>
     </div>
