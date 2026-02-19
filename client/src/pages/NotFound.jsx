@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { toggleNavbarView, setActivePage } from "../Redux/MenuSlice";
+import { toggleNavbarView, setActivePage } from "../Redux/menuSlice";
 import { Unplug } from "lucide-react";
 
 const NotFound = () => {

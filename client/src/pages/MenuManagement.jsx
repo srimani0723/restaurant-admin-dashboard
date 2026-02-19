@@ -10,7 +10,7 @@ import {
   setIsAvailable,
   setMaxPrice,
   setMinPrice,
-} from "../Redux/MenuSlice";
+} from "../Redux/menuSlice";
 import { toggleMenuFormView } from "../Redux/menuFormSlice";
 import EmptyView from "../components/EmptyView";
 

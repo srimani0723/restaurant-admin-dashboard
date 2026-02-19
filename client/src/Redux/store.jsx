@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import menuReducer from "./MenuSlice";
+import menuReducer from "./menuSlice";
 import menuFormReducer from "./menuFormSlice";
 import cartReducer from "./cartSlice";
 
