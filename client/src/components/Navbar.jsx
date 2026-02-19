@@ -17,7 +17,7 @@ import {
 
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleNavbarView, setActivePage } from "../Redux/MenuSlice";
+import { toggleNavbarView, setActivePage } from "../Redux/menuSlice";
 
 const list = [
   {
